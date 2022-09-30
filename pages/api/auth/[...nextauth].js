@@ -1,11 +1,14 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
-
+// import Providers from "next-auth/providers";
+import EmailProvider from "next-auth/providers/email"
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter"
+import clientPromise from "../../../lib/mongodb"
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export default NextAuth({
+  adapter: MongoDBAdapter(clientPromise),
   providers: [
-    Providers.Email({
+    EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),

@@ -1,12 +1,13 @@
 import Link from 'next/link'
-import { signIn, signOut, useSession } from 'next-auth/client'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import styles from './header.module.css'
 
 // The approach used in this component shows how to built a sign in and sign out
 // component that works on pages which support both client and server side
 // rendering, and avoids any flash incorrect content on initial page load.
 export default function Header () {
-  const [ session, loading ] = useSession()
+  // const [ session, loading ] = useSession()
+  const { data: session, status } = useSession()
   
   return (
     <header>
@@ -14,8 +15,8 @@ export default function Header () {
         <style>{`.nojs-show { opacity: 1; top: 0; }`}</style>
       </noscript>
       <div className={styles.signedInStatus}>
-        <p className={`nojs-show ${(!session && loading) ? styles.loading : styles.loaded}`}>
-          {!session && <>
+        <p className={`nojs-show ${(!status === "authenticated" && loading) ? styles.loading : styles.loaded}`}>
+          {!status === "authenticated" && <>
             <span className={styles.notSignedInText}>You are not signed in</span>
             <a
                 href={`/api/auth/signin`}
